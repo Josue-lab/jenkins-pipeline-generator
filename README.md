@@ -5,13 +5,16 @@ This repository contains the Jenkins file that is used on Jenkins Generator work
  * Apply Giter8 Templates
  * Create ECS Docker Registry on AWS
 
-## Setup
+## Setup
 
 This project requires the following parameters from Jenkins:
 
-- ProjectName [String]: The name of the project to create
-- ProjectTemplate [Choice]: The kind of project to create, options are ()
+- GITHUB_ORGANIZATION [String]: The name of the Github organization where the projects will be created
+- PROJECT_NAME [String]: The name of the project to create
+- PROJECT_TEMPLATE [Choice]: The kind of project to create, options are ()
 
 It requires the following environment variables defined on Jenkins
 
-JENKINS_GITHUB_CREDENTIALS_ID
+- JENKINS_GITHUB_CREDENTIALS_ID: Jenkins Credentials Id. You must first create the
+credentials (RSA key or any other method) to access your organization repositories,
+then copy your Jenkins credentials Id as this parameter.
