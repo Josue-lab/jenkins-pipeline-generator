@@ -5,7 +5,8 @@ node{
         parameters([
             string(name: 'GITHUB_ORGANIZATION', description: 'The organization name to be used on Github'),
             string(name: 'PROJECT_NAME', description: 'The name of the project to create'),
-            choice(name: 'PROJECT_TEMPLATE', choices: 'no_template\ntelegraph/sbt-pipeline.playframework.g8', description: 'The template to use on the new project')
+            choice(name: 'PROJECT_TEMPLATE', choices: 'no_template\ntelegraph/sbt-pipeline.playframework.g8', description: 'The template to use on the new project'),
+            string(name: 'SBT_TOOL_NAME', defaultValue: 'sbt', description: 'The name of the Sbt tool set up on Jenkins'),
         ])
     ])
 
@@ -15,14 +16,7 @@ node{
     def projectNameParsed   = ""
     def shouldApplyTemplate = projectTemplate != "no_template"
 
-    def sbtName
-    if (params.SbtToolName) {
-        sbtName = SbtToolName
-    } else {
-        echo 'Using default Sbt tool name: "sbt"'
-        sbtName = 'sbt'
-    }
-    def sbt = "${tool name: sbtName, type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt"
+    def sbt = "${tool name: SBT_TOOL_NAME, type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt"
 
     stage("Process Project Name"){
         if(projectName.equals("")){
