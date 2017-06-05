@@ -1,12 +1,23 @@
 
 node{
-    def projectName         = ProjectName.trim()
-    def projectTemplate     = ProjectTemplate.trim()
+
+    properties ([
+        parameters([
+            string(name: 'GITHUB_ORGANIZATION', description: 'The organization name to be used on Github'),
+            string(name: 'PROJECT_NAME', description: 'The name of the project to create'),
+            choice(name: 'PROJECT_TEMPLATE', choices: 'no_template\ntelegraph/sbt-pipeline.playframework.g8', description: 'The template to use on the new project'),
+            string(name: 'SBT_TOOL_NAME', defaultValue: 'sbt', description: 'The name of the Sbt tool set up on Jenkins'),
+        ])
+    ])
+
+    def projectName         = PROJECT_NAME.trim()
+    def projectTemplate     = PROJECT_TEMPLATE.trim()
     def jenkins_github_id   = "${env.JENKINS_GITHUB_CREDENTIALS_ID}"
     def projectNameParsed   = ""
     def shouldApplyTemplate = projectTemplate != "no_template"
-    def sbtFolder           = "${tool name: 'sbt-0.13.13', type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin"
-        
+
+    def sbt = "${tool name: SBT_TOOL_NAME, type: 'org.jvnet.hudson.plugins.SbtPluginBuilder$SbtInstallation'}/bin/sbt"
+
     stage("Process Project Name"){
         if(projectName.equals("")){
             error "Invalid Input Property '${ProjectName}'"
@@ -33,7 +44,7 @@ node{
                 submoduleCfg: [],
                 userRemoteConfigs: [[
                     credentialsId: "${jenkins_github_id}",
-                    url: "git@github.com:telegraph/${projectNameParsed}.git"
+                    url: "git@github.com:${GITHUB_ORGANIZATION}/${projectNameParsed}.git"
                 ]]
             ]
             dir("${projectNameParsed}") {
@@ -49,7 +60,7 @@ node{
     stage("Apply SBT Template"){
         if(shouldApplyTemplate){
             echo "Run 'sbt new ${projectTemplate}'"
-            sh "${sbtFolder}/sbt new git@github.com:${projectTemplate} --name='${projectName}' -f"
+            sh "${sbt} new git@github.com:${projectTemplate} --name='${projectName}' -f"
         }else{
             echo "Skipping"
         }
@@ -75,7 +86,7 @@ node{
             echo "Run 'sbt static:stackSetup'"
             dir("${projectNameParsed}") {
                 sh """
-                    ${sbtFolder}/sbt static:stackSetup
+                    ${sbt} static:stackSetup
                 """
             }
         }else{
