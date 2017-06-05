@@ -18,3 +18,6 @@ It requires the following environment variables defined on Jenkins
 - JENKINS_GITHUB_CREDENTIALS_ID: Jenkins Credentials Id. You must first create the
 credentials (RSA key or any other method) to access your organization repositories,
 then copy your Jenkins credentials Id as this parameter.
+
+##Note
+We've detected that if we try to execute this Job, the parameterized Properties are not being picked it up. This problem is sorted after the first attempt.
