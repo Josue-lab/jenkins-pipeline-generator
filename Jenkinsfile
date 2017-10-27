@@ -124,7 +124,7 @@ node{
                                 branch("master")
                             }
                         }
-                        scriptPath(\'Jenkinsfile\')
+                        scriptPath(\'Jenkinsfile.groovy\')
                     }
                 }
             }
