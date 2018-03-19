@@ -59,8 +59,11 @@ node{
 
     stage("Apply SBT Template"){
         if(shouldApplyTemplate){
+            echo "Run 'git clone git@github.com:${projectTemplate}'"
+            sh "git clone git@github.com:${projectTemplate} sbt-template.g8"
             echo "Run 'sbt new ${projectTemplate}'"
-            sh "${sbt} new git@github.com:${projectTemplate} --name='${projectName}' -f"
+            sh "${sbt} new file://sbt-template.g8/ --name='${projectName}' -f"
+            sh "rm -rf sbt-template.g8"
         }else{
             echo "Skipping"
         }
