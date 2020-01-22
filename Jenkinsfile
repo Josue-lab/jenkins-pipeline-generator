@@ -97,6 +97,14 @@ node{
         }
     }
 
+    stage("Build Pipeline Job"){
+        echo "Create Build Pipeline"
+        jobDsl scriptText: """
+                environmentVariables(PROJECT_NAME: "${projectNameParsed}")
+                triggers {
+                    githubPush()
+              }
+    
                 definition {
                     cpsScm {
                         scm {
