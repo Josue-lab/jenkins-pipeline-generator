@@ -84,6 +84,18 @@ node{
         }
     }
     
+    stage("Create Docker Repository"){
+        if(shouldApplyTemplate){
+            echo "Run 'sbt static:stackSetup'"
+            dir("${projectNameParsed}") {
+                sh """
+                    ${sbt} static:stackSetup
+                """
+            }
+        }else{
+            echo "Skipping"
+        }
+    }
     stage("Build Pipeline Job"){
         echo "Create Build Pipeline"
         jobDsl scriptText: """
