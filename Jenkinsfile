@@ -102,5 +102,7 @@ node{
         jobDsl scriptText: """
         
             environmentVariables(PROJECT_NAME: "${projectNameParsed}")
+            
+            """
         }
 }
