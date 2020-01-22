@@ -96,17 +96,6 @@ node{
             echo "Skipping"
         }
     }
-    stage("Build Pipeline Job"){
-        echo "Create Build Pipeline"
-        jobDsl scriptText: """
-            pipelineJob(\"C:\Users\josue.valencia\.jenkins\workspace\Sbt_Pipeline\Pipeline/${projectNameParsed}\"){
-                displayName(\"${projectName} Pipeline\")
-
-                environmentVariables(PROJECT_NAME: "${projectNameParsed}")
-
-                triggers {
-                    githubPush()
-                }
 
                 definition {
                     cpsScm {
