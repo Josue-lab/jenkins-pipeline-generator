@@ -96,37 +96,4 @@ node{
             echo "Skipping"
         }
     }
-
-    stage("Build Pipeline Job"){
-        echo "Create Build Pipeline"
-        jobDsl scriptText: """
-                environmentVariables(PROJECT_NAME: "${projectNameParsed}")
-                triggers {
-                    githubPush()
-              }
-    
-                definition {
-                    cpsScm {
-                        scm {
-                            git {
-                                remote {
-                                    github(\"telegraph/${projectNameParsed}\", \'ssh\')
-                                    credentials("${jenkins_github_id}")
-                                }
-                                extensions {
-                                    cleanBeforeCheckout()
-                                    wipeOutWorkspace()
-                                    submoduleOptions {
-                                        disable( true )
-                                    }
-                                }
-                                branch("master")
-                            }
-                        }
-                        scriptPath(\'Jenkinsfile.groovy\')
-                    }
-                }
-            }
-        """
-    }
 }
