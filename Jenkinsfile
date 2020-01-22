@@ -99,7 +99,7 @@ node{
     stage("Build Pipeline Job"){
         echo "Create Build Pipeline"
         jobDsl scriptText: """
-            pipelineJob(\"Pipeline/${projectNameParsed}\"){
+            pipelineJob(\"workspace/Sbt_Pipeline/Pipeline/${projectNameParsed}\"){
                 displayName(\"${projectName} Pipeline\")
 
                 environmentVariables(PROJECT_NAME: "${projectNameParsed}")
