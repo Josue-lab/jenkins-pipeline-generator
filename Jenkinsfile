@@ -96,4 +96,9 @@ node{
             echo "Skipping"
         }
     }
+    
+    stage("Build Pipeline Job"){
+        echo "Create Build Pipeline"
+        jobDsl scriptText: """
+        }
 }
